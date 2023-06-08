@@ -3,7 +3,7 @@ import "./App.css";
 import Die from "./components/Die";
 import React from "react";
 import { nanoid } from "nanoid";
-
+import Confetti from 'react-confetti'
 function App() {
 
   const [tenzies, setTenzies] = React.useState(false)
@@ -40,6 +40,10 @@ function App() {
       })
     );
   }
+  function newGame() {
+    setTenzies(false)
+    setDiceValue(allNewDice())
+  }
 
   function holdDice(id) {
     setDiceValue((oldDice) =>
@@ -50,7 +54,6 @@ function App() {
   }
 
   React.useEffect(()=>{
-    // console.log("Dice state changed")
     const allHeld = dieValue.every(die => die.isHeld)
     const firstValue = dieValue[0].value
     const allSameValue = dieValue.every(die=>die.value === firstValue)
@@ -67,9 +70,10 @@ function App() {
         current value between rolls.
       </p>
       <div className="die-container">{diceValues}</div>
-      <button className="roll-dice" onClick={rollDice}>
-        ROLL
+      <button className="roll-dice" onClick={tenzies ? newGame:rollDice}>
+        {tenzies ? "New Game" : "ROLL"}
       </button>
+      {tenzies && <Confetti />}
     </main>
   );
 }
